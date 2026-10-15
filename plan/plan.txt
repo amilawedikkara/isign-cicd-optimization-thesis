@@ -1,0 +1,180 @@
+## Week 1 — 15–21 Oct
+
+- Select ONE iSign GitHub Actions workflow as the thesis focus.
+- Record starting point:
+  - date
+  - commit ID
+  - workflow file/version
+  - runner/environment
+  - trigger
+- Clearly document:
+  - previous internship work
+  - new thesis contribution
+- Finalize the 3 research/development questions.
+- Inspect the selected workflow:
+  - jobs
+  - steps
+  - dependencies
+  - tests
+  - caching
+  - deployment/build behavior
+- Check how much usable GitHub Actions history exists.
+
+
+## Week 2 — 22–28 Oct
+
+- Define the iSign data fields:
+  - run ID
+  - commit
+  - workflow version
+  - trigger
+  - environment
+  - outcome
+  - start/end timestamps
+  - queue time if available
+  - execution time
+  - job/step durations
+  - reruns
+- Create the GitHub API/Python data-collection script.
+- Collect and structure the available iSign workflow/job data.
+- Record the current test-suite and build baseline.
+- Define the simple baseline method:
+  - median duration
+  - simple threshold/rule for unusually slow runs
+- Decide the exact metrics that will later be used for before/after evaluation.
+
+
+## Week 3 — 29 Oct–4 Nov
+
+- Clean and preprocess the iSign dataset.
+- Check:
+  - missing values
+  - skipped/cancelled jobs
+  - failed jobs
+  - reruns
+  - duplicate observations
+  - inconsistent workflow versions
+  - incomparable workloads
+- Calculate consistent job/workflow durations.
+- Produce the first descriptive statistics:
+  - mean
+  - median
+  - standard deviation
+- Assess whether iSign has enough historical data for meaningful anomaly-detection development.
+
+
+## Week 4 — 5–11 Nov
+
+- If iSign data is insufficient, prepare the FastAPI reference dataset.
+- Keep the validated starting point:
+  - 508 candidate runs
+  - 316 structurally comparable candidate runs
+  - 15 comparable test-matrix jobs per run
+- Perform remaining FastAPI preprocessing:
+  - missing values
+  - timestamps/durations
+  - reruns
+  - workflow consistency
+  - suitable numerical features
+- Separate data used for method development from data used for evaluation.
+- Document important differences between FastAPI and iSign.
+
+
+## Week 5 — 12–18 Nov
+
+- Implement the simple baseline anomaly method.
+- Develop the first Isolation Forest prototype using:
+  - Python
+  - Pandas
+  - Scikit-learn
+- Select only justified numerical features.
+- Compare:
+  - simple median/threshold method
+  - Isolation Forest
+- Examine:
+  - flagged anomalies
+  - false/unhelpful alarms
+  - differences between the two approaches
+- Refine the Python analysis tool.
+
+
+## Week 6 — 19–25 Nov
+
+- Apply the completed analysis approach to the selected iSign workflow.
+- Combine:
+  - descriptive statistics
+  - simple baseline results
+  - Isolation Forest results
+  - workflow/log inspection
+- Investigate flagged unusual runs instead of assuming they are inefficiencies.
+- Identify one real iSign bottleneck or improvement opportunity.
+- Select ONE justified optimization.
+- Freeze the before/after measurement design before changing the workflow.
+
+
+## Week 7 — 26 Nov–2 Dec
+
+- Perform several controlled pre-optimization baseline runs.
+- Record:
+  - median workflow duration
+  - variability
+  - relevant job durations
+  - total job execution time
+  - failures/reruns
+  - test count
+  - coverage if available
+  - mandatory checks
+  - analysis-tool execution time
+- Keep application code, tests, dependencies, and environment as consistent as possible.
+- Implement the selected CI/CD optimization in a controlled branch.
+- Verify that the workflow still works correctly.
+
+
+## Week 8 — 3–9 Dec
+
+- Perform several comparable post-optimization runs.
+- Collect the same metrics used for the baseline.
+- Verify:
+  - required tests pass
+  - application build succeeds
+  - mandatory checks remain
+  - GitHub Actions workflow succeeds
+- Compare BEFORE vs AFTER.
+- Calculate actual improvement or regression.
+- Do not force the result to meet the 20% target.
+
+
+## Week 9 — 10–16 Dec
+
+- Analyze and document the final results.
+- Answer the three research/development questions.
+- Separate:
+  - analysis-tool results
+  - optimization results
+- Document:
+  - whether Isolation Forest added value over the simple baseline
+  - actual performance change
+  - reliability/test-quality effects
+  - limitations
+  - FastAPI vs iSign differences
+  - threats to validity
+  - recommendations for future improvements
+- Prepare final figures, tables, and graphs.
+
+
+## Week 10 — 17–23 Dec
+
+- Complete the thesis report:
+  - Introduction
+  - Knowledge base
+  - iSign starting situation and own contribution
+  - Data, methods and evaluation
+  - Python analysis tool
+  - selected optimization
+  - measurements and results
+  - discussion and conclusions
+- Check that every objective and research question is answered.
+- Finalize references and AI-use disclosure.
+- Remove confidential information, credentials, and unnecessary internal details.
+- Send complete draft to Jukka for final feedback.
+- Apply corrections and prepare the thesis for final submission.

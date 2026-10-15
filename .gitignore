@@ -1,0 +1,45 @@
+# Secrets
+.env
+.env.*
+*.key
+*.pem
+*token*
+*secret*
+
+# Private/raw iSign data
+data/raw/
+private/
+logs/
+
+# Python
+.venv/
+venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Office temporary files
+~$*.docx
+~$*.xlsx
+~$*.pptx
+
+# Editors / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.log
+
+# Large supporting project materials - keep local only
+references/project_materials/
+
+# Internal thesis/reference documents - keep local only
+*.docx
+plan/*.pdf
+references/guidance/
