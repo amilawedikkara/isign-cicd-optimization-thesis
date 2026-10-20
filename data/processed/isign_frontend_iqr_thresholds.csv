@@ -1,0 +1,4 @@
+metric,q1,q3,iqr,upper_threshold
+workflow_duration_seconds,64.0,73.0,9.0,86.5
+build_deploy_duration_seconds,52.0,61.0,9.0,74.5
+scp_duration_seconds,18.0,20.0,2.0,23.0

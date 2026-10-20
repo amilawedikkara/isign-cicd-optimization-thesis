@@ -43,3 +43,5 @@ references/project_materials/
 *.docx
 plan/*.pdf
 references/guidance/
+
+data/processed/isign_frontend_iqr_anomalies.csv

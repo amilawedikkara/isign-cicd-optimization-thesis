@@ -53,3 +53,26 @@ The workflow:
 This baseline represents the selected iSign frontend CI/CD workflow before any thesis-specific optimization is implemented. Historical execution-time and job-level measurements will be added after data collection and preprocessing.
 
 No optimization has been selected or applied yet.
+
+## Measured Historical Baseline
+
+Comparable successful full workflow runs analyzed: 33
+
+Run-level duration statistics:
+- workflow duration: mean 70.55 s, median 70.0 s, standard deviation 8.96 s, range 57-90 s
+- check-commit-message duration: mean 5.27 s, median 6.0 s, standard deviation 1.38 s, range 3-8 s
+- build-and-deploy duration: mean 57.88 s, median 58.0 s, standard deviation 7.56 s, range 45-77 s
+
+Step-level finding:
+- Transfer build files via SCP is the longest recurring individual step.
+- SCP transfer duration: mean 20.64 s, median 19.0 s, standard deviation 4.72 s, range 17-40 s.
+
+## Rerun Handling
+
+Workflow execution duration is calculated using run_started_at to updated_at.
+The original created_at timestamp is not used for execution duration because reruns may keep the original workflow creation time and would otherwise produce misleadingly long durations.
+
+Example:
+- Run 1, attempt 2 initially appeared as 1661 s when calculated from created_at.
+- Using run_started_at, the same attempt was approximately 57 s.
+- Therefore reruns must be handled consistently during preprocessing.

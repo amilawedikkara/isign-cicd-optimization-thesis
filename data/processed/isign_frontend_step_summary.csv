@@ -1,0 +1,15 @@
+step_name,observations,mean_seconds,median_seconds,std_seconds,min_seconds,max_seconds
+Transfer build files via SCP,33,20.64,19.0,4.72,17.0,40.0
+Build React app,33,7.64,8.0,1.34,4.0,10.0
+Setup Node.js,33,6.24,6.0,1.94,1.0,9.0
+Install dependencies,33,5.82,6.0,1.57,2.0,10.0
+Build appleboy/scp-action@v0.1.7,33,5.0,5.0,2.76,2.0,14.0
+Verify deployment,33,2.91,3.0,0.29,2.0,3.0
+Sync deployed files (Zero Downtime),33,3.36,3.0,0.49,3.0,4.0
+Set up job,33,1.85,2.0,0.67,1.0,3.0
+Checkout code,33,0.09,0.0,0.29,0.0,1.0
+Complete job,33,0.03,0.0,0.17,0.0,1.0
+Notify on success,33,0.03,0.0,0.17,0.0,1.0
+Run ESLint,33,0.48,0.0,0.57,0.0,2.0
+Post Checkout code,33,0.24,0.0,0.44,0.0,1.0
+Post Setup Node.js,33,0.55,0.0,0.75,0.0,2.0
