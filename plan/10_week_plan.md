@@ -136,52 +136,64 @@ Start notes on:
 
 ### Focus
 
-Collect, preprocess, and statistically analyze the selected iSign workflow.
+Collect, preprocess, and statistically analyze the selected iSign frontend workflow.
 
 ### Data Collection
 
-- define run-level fields
-- define job-level fields
-- define step-level fields
-- develop reproducible Python GitHub Actions collector
-- retrieve workflow-run data using GitHub API
-- retrieve job-level information
-- retrieve step-level information
-- save raw data as structured CSV files
+Completed:
+
+- defined run-level fields
+- defined job-level fields
+- defined step-level fields
+- developed a reproducible Python GitHub Actions collector
+- retrieved workflow-run data using the GitHub API
+- retrieved job-level information
+- retrieved step-level information
+- saved raw data as structured CSV files
 
 ### Comparable Run Selection
 
-- use push runs from development
-- inspect check-commit-message job
-- inspect build-and-deploy job
-- separate skipped build-and-deploy runs
-- retain successful full build-and-deploy runs for performance analysis
-- document inclusion and exclusion rules
+Completed:
+
+- used push runs from the `development` branch
+- inspected the `check-commit-message` job
+- inspected the `build-and-deploy` job
+- separated skipped `build-and-deploy` runs
+- retained successful full `build-and-deploy` runs for performance analysis
+- documented inclusion and exclusion rules
 
 ### Preprocessing
 
-- inspect timestamps
-- inspect missing values
-- inspect skipped steps
-- inspect cancelled jobs
-- inspect failed jobs
-- inspect reruns
-- use run_attempt consistently
-- distinguish created_at from run_started_at
-- calculate execution durations consistently
-- verify comparable workflow structure
+Completed so far:
+
+- inspected timestamps
+- inspected skipped steps
+- inspected cancelled jobs
+- inspected failed jobs
+- inspected reruns
+- used `run_attempt` consistently
+- distinguished `created_at` from `run_started_at`
+- calculated execution durations consistently
+- verified the comparable workflow structure
+
+Still to finalize:
+
+- confirm missing-value handling
+- confirm final preprocessing rules
+- confirm the numerical features to be used for Isolation Forest
+- create the final Isolation Forest input dataset
 
 ### Rerun Rule
 
-Workflow execution duration should be calculated using:
+Workflow execution duration is calculated using:
 
-run_started_at -> updated_at
+`run_started_at -> updated_at`
 
 Do not use:
 
-created_at -> updated_at
+`created_at -> updated_at`
 
-for rerun execution duration because created_at may represent the original attempt.
+for rerun execution duration because `created_at` may represent the original workflow attempt rather than the actual start time of the rerun.
 
 ### Current Dataset
 
@@ -199,11 +211,11 @@ Step observations:
 
 Calculation:
 
-33 runs x 15 steps = 495 step observations
+33 runs × 15 steps = 495 step observations
 
 ### Descriptive Statistics
 
-Calculate:
+Completed calculations:
 
 - mean
 - median
@@ -214,11 +226,11 @@ Calculate:
 - Q3
 - IQR
 
-Analyze:
+Analyzed:
 
 - workflow duration
-- check-commit-message duration
-- build-and-deploy duration
+- `check-commit-message` duration
+- `build-and-deploy` duration
 - important individual step durations
 
 ### Current Workflow Baseline
@@ -230,14 +242,14 @@ Workflow duration:
 - standard deviation = 8.96 seconds
 - range = 57-90 seconds
 
-check-commit-message:
+`check-commit-message`:
 
 - mean = 5.27 seconds
 - median = 6.0 seconds
 - standard deviation = 1.38 seconds
 - range = 3-8 seconds
 
-build-and-deploy:
+`build-and-deploy`:
 
 - mean = 57.88 seconds
 - median = 58.0 seconds
@@ -248,7 +260,7 @@ build-and-deploy:
 
 Longest recurring individual step:
 
-Transfer build files via SCP
+`Transfer build files via SCP`
 
 SCP duration:
 
@@ -266,7 +278,7 @@ Workflow duration:
 - Q3 = 73 seconds
 - IQR = 9 seconds
 
-Build-and-deploy:
+`build-and-deploy`:
 
 - Q1 = 52 seconds
 - median = 58 seconds
@@ -282,56 +294,98 @@ SCP transfer:
 
 ### Statistical Anomaly Baseline
 
-Use a simple statistical method before Isolation Forest.
+A simple statistical method was applied before Isolation Forest.
 
-Initial method:
+Method:
 
 IQR upper threshold
 
 Formula:
 
-Upper threshold = Q3 + 1.5 x IQR
+`Upper threshold = Q3 + 1.5 × IQR`
 
-For SCP:
+Calculated upper thresholds:
 
-Q3 = 20 seconds
+- workflow duration > 86.5 seconds
+- `build-and-deploy` duration > 74.5 seconds
+- SCP transfer duration > 23 seconds
 
-IQR = 2 seconds
+### IQR Anomaly Results
 
-Threshold:
+The IQR baseline identified 5 of the 33 comparable workflow runs for further investigation.
 
-20 + (1.5 x 2) = 23 seconds
+Results:
 
-Candidate anomaly:
+- 3 runs exceeded the workflow-duration threshold
+- 2 runs exceeded the `build-and-deploy` threshold
+- 5 runs exceeded the SCP-duration threshold
 
-SCP duration > 23 seconds
+SCP duration was above its IQR threshold in all five flagged runs.
+
+This does not yet prove that SCP is an inefficient part of the workflow.
+
+Current interpretation:
+
+SCP is a recurring candidate for technical investigation.
+
+The anomaly results will later be compared with Isolation Forest before deciding whether SCP or another workflow component represents a real optimization opportunity.
 
 ### Quality Baseline
 
-Record:
+Recorded and inspected:
 
 - npm build command
-- test commands
-- current automated test result
-- build result
+- available test commands
+- build behaviour
 - workflow result
-- deployment result
+- deployment process
 - current GitHub Actions quality checks
 
 Existing findings:
 
 - Vitest automated tests exist
-- current GitHub Actions workflow does not execute Vitest
-- workflow calls npm run lint
-- frontend package.json does not currently contain a lint script
-- lint step uses continue-on-error
-- lint failure therefore does not stop deployment
+- the current GitHub Actions workflow does not execute Vitest
+- the workflow calls `npm run lint`
+- the frontend `package.json` does not currently contain a lint script
+- the lint step uses `continue-on-error`
+- a lint failure therefore does not stop deployment
 
 ## Literature & Report Writing
 
+### Literature Review
+
+Focused literature review completed for sources S001-S014.
+
+Topics covered:
+
+- Continuous Integration
+- Continuous Delivery
+- CI/CD pipelines
+- fast feedback
+- GitHub Actions workflow structure
+- GitHub REST API data collection
+- CI build duration and performance
+- anomaly detection
+- unsupervised anomaly detection
+- Isolation Forest
+- scikit-learn Isolation Forest implementation
+- statistical outlier detection
+- IQR
+- evaluation of unsupervised anomaly detection
+- experimental design
+- before/after performance evaluation
+
+Literature notes are recorded in:
+
+`references/source_notes.md`
+
+S015 is intentionally pending.
+
+It will be selected after the technical analysis identifies the actual evidence-based CI/CD optimization so that the literature supports the selected optimization rather than determining the optimization in advance.
+
 ### iSign Starting Situation
 
-Write:
+Report-writing topics:
 
 - iSign system background
 - CI/CD starting situation
@@ -341,23 +395,24 @@ Write:
 - workflow trigger
 - workflow jobs
 - workflow steps
-- reason for selecting frontend instead of backend
+- reason for selecting the frontend instead of the backend
 - current quality-check findings
 
 ### Data Source
 
-Write:
+Report-writing topics:
 
 - GitHub Actions as the technical data source
-- GitHub API
+- GitHub REST API
 - workflow-run data
 - job-level data
 - step-level data
 - timestamp-based duration calculation
+- comparable-run selection
 
 ### Baseline Method
 
-Write:
+Report-writing topics:
 
 - why a baseline is needed
 - descriptive statistics
@@ -366,23 +421,49 @@ Write:
 - standard deviation
 - quartiles
 - IQR
+- IQR upper threshold
+- interpretation of candidate statistical anomalies
 
-### Literature Review
+### Report Writing Status
 
-Study and write notes on:
+Report writing continues in parallel with the technical work.
 
-- CI/CD performance metrics
-- pipeline execution time
-- build duration
-- deployment duration
-- fast feedback
-- GitHub Actions
-- CI/CD reliability
-- statistical outlier detection
+Immediate writing areas:
+
+- Introduction
+- Knowledge Base
+- iSign Starting Situation
+- Data and Methods
+
+The statistical baseline and literature review now provide material that can be used when drafting these sections.
+
+## Completed by 21 October 2026
+
+- completed reproducible GitHub Actions data collection
+- selected 33 comparable successful full workflow runs
+- collected 495 comparable step observations
+- calculated workflow-, job-, and step-level descriptive statistics
+- calculated Q1, Q3, and IQR
+- defined and applied the IQR statistical anomaly baseline
+- identified 5 of 33 runs for further investigation
+- identified SCP duration above the IQR threshold in all 5 flagged runs
+- completed focused literature notes S001-S014
+- recorded literature in `references/source_notes.md`
+- prepared the statistical baseline for later comparison with Isolation Forest
+
+## Still in Progress
+
+- finalize preprocessing rules
+- verify final missing-value handling
+- select final numerical features for Isolation Forest
+- prepare the final Isolation Forest input dataset
+- continue thesis report writing in parallel
 
 ## Status
 
 **IN PROGRESS**
+
+Work is currently ahead of the original calendar schedule.
 
 # Week 3 - 29 October-4 November 2026
 
@@ -1077,14 +1158,14 @@ Work is currently ahead of the original calendar schedule.
 - calculated job-level baseline
 - calculated step-level baseline
 - identified and corrected rerun timestamp issue
-- calculated mean
-- calculated median
-- calculated standard deviation
-- calculated minimum and maximum
-- calculated Q1
-- calculated Q3
-- calculated IQR
-- identified SCP transfer as the longest recurring individual step
+- calculated mean, median, standard deviation, minimum, and maximum
+- calculated Q1, Q3, and IQR
+- defined and applied IQR statistical anomaly thresholds
+- identified 5 candidate unusual runs
+- identified SCP duration above its IQR threshold in all 5 flagged runs
+- identified SCP as a recurring investigation candidate
+- completed literature notes S001-S014
+- continued thesis report writing and preparation in parallel
 
 # Current Exact Technical Position
 
@@ -1094,13 +1175,13 @@ descriptive statistics completed
 ->
 normal behaviour understood
 ->
-CURRENT: create and apply simple statistical anomaly threshold
+IQR statistical anomaly threshold applied
 ->
-identify statistically unusual runs
+5 candidate unusual runs identified
 ->
-complete preprocessing
+SCP identified as a recurring investigation candidate
 ->
-prepare ML dataset
+**CURRENT: finalize preprocessing and prepare ML dataset**
 ->
 Isolation Forest
 ->
@@ -1109,6 +1190,8 @@ compare statistical baseline with Isolation Forest
 investigate actual inefficiencies
 ->
 select one evidence-based optimization
+->
+add S015 supporting the selected optimization
 ->
 implement optimization
 ->
