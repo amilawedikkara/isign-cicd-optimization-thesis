@@ -1,0 +1,6 @@
+feature,q1_seconds,q3_seconds,iqr_seconds,lower_fence_seconds,upper_fence_seconds
+scp_action_setup_seconds,3.0,5.0,2.0,0.0,8.0
+setup_node_seconds,6.0,8.0,2.0,3.0,11.0
+install_dependencies_seconds,5.0,7.0,2.0,2.0,10.0
+build_react_seconds,7.0,9.0,2.0,4.0,12.0
+scp_transfer_seconds,18.0,20.0,2.0,15.0,23.0
