@@ -4,9 +4,9 @@
 
 The selected case-study workflow is the iSign frontend GitHub Actions workflow `Deploy-to_Dev_Server.yml`.
 
-The historical dataset contained 55 frontend workflow runs. After the comparability rules were applied, 33 successful full workflow runs were kept for analysis. These runs produced 495 step-level observations.
+The historical dataset had 55 frontend workflow runs. After the comparability rules were applied, 33 successful full workflow runs were retained for analysis. These runs resulted in 495 step-level observations.
 
-Only comparable runs were used. This means that the statistical analysis and the Isolation Forest analysis compare workflow runs that performed the same relevant work.
+Only comparable runs were used. This means that the statistical analysis and the Isolation Forest analysis compare workflow runs that performed the same type of work.
 
 The processed dataset was prepared for:
 
@@ -19,32 +19,31 @@ The processed dataset was prepared for:
 
 ### 5.2.1 Overall workflow and job-level baseline
 
-Descriptive statistics were calculated for the workflow, job and selected step durations of the 33 comparable runs.
+Descriptive statistics were calculated for the workflow, jobs and selected steps of the 33 comparable runs. This overall baseline was kept because it shows the normal timing of the workflow and helps to identify which parts became unusually slow.
 
-| Metric | Mean (s) | Median (s) | Q1 (s) | Q3 (s) | IQR (s) | Standard deviation (s) | Range (s) |
-|---|---:|---:|---:|---:|---:|---:|---:|
-| Total workflow duration | 70.55 | 70 | 64 | 73 | 9 | 8.96 | 57-90 |
-| Check-commit-message job | 5.27 | 6 | - | - | - | 1.38 | 3-8 |
-| Build-and-deploy job | 57.88 | 58 | 52 | 61 | 9 | 7.56 | 45-77 |
-| SCP transfer step | 20.64 | 19 | 18 | 20 | 2 | 4.72 | 17-40 |
+| Metric                   | Mean (s) | Median (s) | Q1 (s) | Q3 (s) | IQR (s) | Standard deviation (s) | Range (s) |
+| ------------------------ | -------- | ---------- | ------ | ------ | ------- | ---------------------- | --------- |
+| Total workflow duration  | 70.55    | 70         | 64     | 73     | 9       | 8.96                   | 57-90     |
+| Check-commit-message job | 5.27     | 6          | -      | -      | -       | 1.38                   | 3-8       |
+| Build-and-deploy job     | 57.88    | 58         | 52     | 61     | 9       | 7.56                   | 45-77     |
+| SCP transfer step        | 20.64    | 19         | 18     | 20     | 2       | 4.72                   | 17-40     |
 
-The first IQR analysis was used to find unusually long workflow and job durations. The calculated upper thresholds were:
+The first IQR analysis was used to find unusually long workflow, job and SCP transfer times. The calculated upper limits were:
 
 - total workflow duration: 86.5 seconds
 - build-and-deploy duration: 74.5 seconds
 - SCP transfer duration: 23 seconds
 
-Using these aggregate thresholds, runs 19, 37, 38, 52 and 55 were flagged as unusual in at least one measured duration.
+Runs 19, 37, 38, 52 and 55 had SCP transfer times above the IQR upper limit of 23 seconds.
 
 ![SCP transfer duration across the comparable iSign runs](../figures/scp_transfer_iqr_threshold.png)
 
-**Figure 1.** SCP transfer duration across the 33 comparable iSign frontend workflow runs. The dashed line shows the IQR upper threshold of 23 seconds.
+**Figure 1.** SCP transfer duration across the 33 comparable iSign frontend workflow runs. The dashed line shows the IQR upper limit of 23 seconds.
 
-Figure 1 shows that runs 19, 37, 38, 52 and 55 were above the SCP transfer upper threshold. This aggregate analysis helps to show where slow behaviour appears in the workflow.
-
+Figure 1 shows that Runs 19, 37, 38, 52 and 55 were above the SCP transfer upper limit. This overall analysis shows where unusually slow behaviour appeared in the workflow before the more detailed IQR and Isolation Forest comparison.
 ### 5.2.2 Common-feature IQR baseline for method comparison
 
-For a direct comparison with Isolation Forest, a second IQR analysis was performed. It used exactly the same five step-duration features as Isolation Forest:
+A second IQR analysis was carried out to make a fair comparison with Isolation Forest. Both methods used the same five step-duration features:
 
 - SCP action setup
 - Node.js setup
@@ -52,24 +51,23 @@ For a direct comparison with Isolation Forest, a second IQR analysis was perform
 - React build
 - SCP transfer
 
-For this comparison, both lower and upper IQR fences were used. This means that the IQR method can identify values that are unusually low or unusually high.
+For this comparison, both the lower and upper IQR limits were used. This allowed the IQR method to identify values that were unusually low or unusually high.
 
-| Feature | Q1 (s) | Q3 (s) | IQR (s) | Lower fence (s) | Upper fence (s) |
-|---|---:|---:|---:|---:|---:|
-| SCP action setup | 3 | 5 | 2 | 0 | 8 |
-| Node.js setup | 6 | 8 | 2 | 3 | 11 |
-| Dependency installation | 5 | 7 | 2 | 2 | 10 |
-| React build | 7 | 9 | 2 | 4 | 12 |
-| SCP transfer | 18 | 20 | 2 | 15 | 23 |
+| Feature                 | Q1 (s) | Q3 (s) | IQR (s) | Lower fence (s) | Upper fence (s) |
+| :---------------------- | -----: | -----: | ------: | --------------: | --------------: |
+| SCP action setup        |      3 |      5 |       2 |               0 |               8 |
+| Node.js setup           |      6 |      8 |       2 |               3 |              11 |
+| Dependency installation |      5 |      7 |       2 |               2 |              10 |
+| React build             |      7 |      9 |       2 |               4 |              12 |
+| SCP transfer            |     18 |     20 |       2 |              15 |              23 |
 
-A feature value was treated as an IQR outlier when it was below the lower fence or above the upper fence. A workflow run was flagged when at least one of the five features was outside its IQR fences.
+A feature value was treated as an IQR outlier when it was below the lower limit or above the upper limit. A workflow run was flagged when at least one of the five feature values was outside these limits.
 
 The common-feature IQR analysis flagged 10 runs:
 
-**2, 3, 4, 19, 22, 37, 38, 39, 52 and 55.**
+**Runs 2, 3, 4, 19, 22, 37, 38, 39, 52 and 55.**
 
-This common-feature IQR result is used for the direct comparison with Isolation Forest in Section 5.4. The earlier aggregate IQR analysis is kept because it helps to explain the overall workflow behaviour.
-
+This common-feature IQR result is used for the direct comparison with Isolation Forest in Section 5.4. The earlier overall IQR analysis is also kept because it helps to show the general workflow timing and where unusually slow behaviour appeared.
 ## 5.3 Isolation Forest Results
 
 Isolation Forest was applied to the same 33 comparable iSign frontend workflow runs.
@@ -231,4 +229,18 @@ Isolation Forest classified both complete five-feature timing patterns as normal
 
 Together with Run 38, these cases show that one unusual feature value does not always make the full run anomalous for Isolation Forest.
 
-At this point, the numerical classification and the method comparison are complete. The next stage is to check the workflow configuration and the relevant run or log evidence before deciding whether any of these unusual timing results show a real CI/CD inefficiency.
+### 5.5.10 Summary of the main investigation candidates
+
+The flagged runs were also grouped by workflow step. This helps to show which steps had repeated unusual behaviour and which area should be investigated first.
+
+| Step | Evidence from flagged runs |
+| :--- | :--- |
+| SCP action setup | High values were found in Runs 55, 37, 39 and 22. This makes SCP action setup a strong candidate for technical investigation. |
+| SCP transfer | High values were found in Runs 19, 52, 55, 37 and 38. This was the strongest repeated slow-behaviour signal in the analysed runs. |
+| Node.js setup | Unusual values were mainly very low times, especially in Runs 2 and 3. Therefore, there was no clear evidence of a performance problem in this step. |
+| Dependency installation | No investigated run had a dependency-installation value outside the IQR limits. |
+| React build | No investigated run was mainly flagged because of React build duration. |
+
+Based on the numerical results, the SCP-related deployment steps showed the strongest repeated unusual behaviour. Therefore, SCP action setup and SCP transfer were selected as the first area for technical investigation in Chapter 6.
+
+At this point, the numerical classification and the method comparison are complete. The next stage is to check the workflow configuration and the relevant run or log evidence before deciding whether the unusual SCP-related behaviour shows a real CI/CD inefficiency.
