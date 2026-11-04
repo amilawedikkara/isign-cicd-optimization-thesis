@@ -113,20 +113,21 @@ The comparison produced the following results:
 - Isolation Forest only flagged 1 run: **1**
 - 22 runs were classified as normal by both methods
 
+The two methods gave the same classification for 29 of the 33 workflow runs. This gives an agreement rate of **87.9%**.
+
 ![Comparison of IQR and Isolation Forest classifications](../figures/iqr_vs_isolation_forest_comparison.png)
 
 **Figure 3.** Comparison of common-feature IQR and Isolation Forest classifications for the 33 comparable iSign frontend workflow runs.
 
-The two methods agreed on most of the unusual runs found by Isolation Forest. Seven of the eight Isolation Forest anomalies were also flagged by the common-feature IQR method.
+The runs where the methods disagreed were also examined. Run 1 was flagged only by Isolation Forest. None of its five timing values was outside the IQR limits, but Isolation Forest treated the combined timing pattern as unusual.
 
-However, the methods did not give exactly the same results. IQR flagged runs 4, 22 and 38, while Isolation Forest classified these runs as normal.
+In contrast, Runs 4, 22 and 38 were flagged only by IQR. Each of these runs had one timing value outside an IQR limit, while the other timing values stayed within their IQR limits. Isolation Forest treated their overall timing patterns as normal.
 
-Isolation Forest flagged Run 1 even though none of its five individual feature values was outside an IQR fence. This shows an important difference between the methods. IQR checks each feature separately. Isolation Forest looks at the five timing values together.
+These cases show an important difference between the methods. IQR checks each timing feature separately, while Isolation Forest evaluates the five timing features together as one pattern.
 
-Because both methods used the same runs and the same five features, the different results mainly come from how the methods analyse the same timing data.
+The comparison does not prove that one method is more accurate than the other. Verified ground-truth labels showing which workflow runs were truly normal or anomalous were not available. Therefore, precision and recall were not calculated.
 
-This comparison does not prove that one method is more accurate than the other. The historical CI/CD data does not have verified labels showing which runs are truly anomalous. For this reason, the flagged runs must be investigated before they can be treated as real CI/CD inefficiencies.
-
+The flagged runs were investigated further before they were considered possible CI/CD inefficiencies.
 ## 5.5 Numerical Investigation of Flagged Runs
 
 The corrected common-feature comparison changed some of the earlier run classifications. Therefore, the numerical investigation below uses the common-feature IQR result and the existing Isolation Forest result.
@@ -236,7 +237,7 @@ The flagged runs were also grouped by workflow step. This helps to show which st
 | Step | Evidence from flagged runs |
 | :--- | :--- |
 | SCP action setup | High values were found in Runs 55, 37, 39 and 22. This makes SCP action setup a strong candidate for technical investigation. |
-| SCP transfer | High values were found in Runs 19, 52, 55, 37 and 38. This was the strongest repeated slow-behaviour signal in the analysed runs. |
+| SCP transfer | High values were found in Runs 19, 52, 55, 37 and 38. This was the strongest repeated indication of slow behaviour in the analysed runs. |
 | Node.js setup | Unusual values were mainly very low times, especially in Runs 2 and 3. Therefore, there was no clear evidence of a performance problem in this step. |
 | Dependency installation | No investigated run had a dependency-installation value outside the IQR limits. |
 | React build | No investigated run was mainly flagged because of React build duration. |
