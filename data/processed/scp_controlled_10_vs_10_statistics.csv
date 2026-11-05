@@ -1,0 +1,9 @@
+Metric,Native,Docker
+Runs,10.0,10.0
+Mean_seconds,19.5,27.4
+Median_seconds,20.0,27.0
+SD_seconds,1.9578900207451218,3.134042472944842
+Minimum_seconds,17.0,23.0
+Maximum_seconds,23.0,34.0
+Range_seconds,6.0,11.0
+Successful_runs,10.0,10.0
