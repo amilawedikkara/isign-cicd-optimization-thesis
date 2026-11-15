@@ -1,0 +1,5 @@
+﻿"Set","Order","Method","RunId","BuildJob_s","ReactBuild_s","DockerSetup_s","SSHKeyscan_s","RemoteFolder_s","RawSCP_s","SCPRelatedTotal_s","Sync_s","Verify_s","Conclusion"
+"1","1","Docker","43754185213","57","6","4",,,"24","28","3","3","success"
+"1","2","Native","43754368228","50","6",,"4","5","11","20","3","3","success"
+"2","1","Native","43754528564","49","8",,"4","5","10","19","4","3","success"
+"2","2","Docker","43754717659","52","9","1",,,"18","19","3","3","success"
