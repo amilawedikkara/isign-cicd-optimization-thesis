@@ -1,0 +1,7 @@
+﻿"Metric","Method","N","Mean_s","Median_s","SD_s","Min_s","Max_s","Range_s","NativeMinusDocker_s","NativeReduction_pct"
+"Workflow duration","Docker","14","89.43","87","12.72","77","129","52","",""
+"Workflow duration","Native","14","87","86.5","9.68","74","111","37","-2.43","2.72"
+"Resource-use proxy","Docker","14","79.57","80","5.75","71","88","17","",""
+"Resource-use proxy","Native","14","77.93","77.5","7.12","67","91","24","-1.64","2.06"
+"SCP-related duration","Docker","14","22.64","22","2.34","20","28","8","",""
+"SCP-related duration","Native","14","21.14","20","3.03","17","27","10","-1.5","6.62"

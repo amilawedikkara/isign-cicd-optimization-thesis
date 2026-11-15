@@ -1,0 +1,4 @@
+Metric,Docker_mean_s,Native_mean_s,Native_minus_Docker_s,Native_reduction_pct,Welch_t,Welch_df,p_value,CI95_low_s,CI95_high_s
+Workflow duration,89.43,87.0,-2.43,2.72,-0.568,24.27,0.5749,-11.24,6.38
+Resource-use proxy,79.57,77.93,-1.64,2.06,-0.672,24.89,0.5079,-6.68,3.39
+SCP-related duration,22.64,21.14,-1.5,6.62,-1.465,24.42,0.1558,-3.61,0.61
