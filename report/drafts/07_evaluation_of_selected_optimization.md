@@ -129,30 +129,29 @@ Figure 7.2 shows the SCP-related duration for each controlled Docker-versus-Nati
 
 ## 7.6 Diagnostic Analysis
 
-We did a separate check for the Vitest step. Vitest was the same in both workflows and was not part of the SCP change. Therefore, a large or consistent difference in Vitest time between Docker and Native would indicate that other workflow variation was affecting the total duration.
+A separate diagnostic check was carried out for the Vitest step. Vitest was identical in both workflows and it was not part of the SCP optimization. A clear or repeated difference in Vitest execution time between Docker and Native could therefore suggest that other workflow variation was affecting the total duration.
 
-Across the 14 Docker runs, the mean Vitest time was 20.36 seconds. Across the 14 Native runs, the mean was 20.43 seconds. The difference was only 0.07 seconds.
+Across the 14 Docker runs, the mean Vitest time was 20.36 seconds. For the 14 Native runs, it was 20.43 seconds. The difference was only 0.07 seconds.
 
-The Welch test showed a p-value of 0.9654. The 95% confidence interval for the Native-minus-Docker difference ranged from -3.28 to 3.43 seconds.
+The Welch test gave a p-value of 0.9654. The 95% confidence interval for the Native-minus-Docker difference ranged from -3.28 to 3.43 seconds.
 
-This does not show a statistically significant difference in Vitest time between the two workflows. Therefore, the observed Vitest variation was treated as run-to-run variation rather than evidence of an effect from the SCP implementation.
+No statistically significant difference in Vitest execution time was found between the two workflows. The observed changes in Vitest timing were therefore treated as run-to-run variation, rather than evidence that the SCP implementation affected the test step.
 
-We did a second diagnostic check on seven paired Docker and Native runs. These runs did not include the Vitest step and were kept separate from the main dataset. They were used to examine the SCP-related part of the workflow with fewer unrelated timing components.
+A second diagnostic check used seven paired Docker and Native runs without Vitest. These runs were kept separate from the main evaluation dataset. The purpose was more narrow: to examine the SCP-related part of the workflow with fewer unrelated timing components.
 
-Across the seven no-Vitest pairs, the mean SCP-related duration was 26.43 seconds for Docker and 21.00 seconds for Native. Native was therefore 5.43 seconds faster on average, corresponding to a 20.54% reduction.
+For these seven no-Vitest pairs, Docker had a mean SCP-related duration of 26.43 seconds. Native had a mean of 21.00 seconds. This is a difference of 5.43 seconds, or a 20.54% reduction with Native SCP.
 
-The runs were executed as matched pairs, so a paired t-test was used. The result was statistically significant (t = -3.596, p = 0.0114). The 95% confidence interval for the Native-minus-Docker difference ranged from -9.12 to -1.73 seconds.
+The runs were matched as Docker-Native pairs, so a paired t-test was used. The result was statistically significant (t = -3.596, p = 0.0114). The 95% confidence interval for the Native-minus-Docker difference was from -9.12 to -1.73 seconds.
 
-Native was faster in five of the seven pairs and equal to Docker in two pairs. None of the pairs showed a longer SCP-related duration for Native.
+Native SCP was faster in five of the seven pairs. Two pairs had the same SCP-related duration. There was no pair where Native took longer than Docker.
 
-This diagnostic evidence supports that Native SCP can reduce SCP-related duration under the no-Vitest diagnostic conditions. However, it does not replace the main 14-by-14 Vitest-enabled evaluation. In the main evaluation, the SCP-related difference was smaller and was not statistically significant.
+This diagnostic result gives supporting evidence that Native SCP can reduce SCP-related duration under the no-Vitest test conditions. It should not be treated as a replacement for the main 14-by-14 Vitest-enabled evaluation. In the main evaluation, the difference in SCP-related duration was smaller and was not statistically significant.
 
 **Figure 7.3. SCP-related duration across the seven no-Vitest diagnostic pairs**
 
 ![Figure 7.3. SCP-related duration across the seven no-Vitest diagnostic pairs](../figures/chapter7_no_vitest_scp_pairs.png)
 
 Figure 7.3 shows the paired SCP-related durations in the no-Vitest diagnostic runs. Native SCP was faster in five pairs and equal to Docker SCP in two pairs.
-
 ## 7.7 Build, Test and Deployment Quality
 
 All 28 runs in the main dataset passed the quality checks. The quality gates worked correctly in these runs.
@@ -201,6 +200,7 @@ The separate Vitest check also showed no statistically significant difference be
 All 28 runs in the main dataset passed Vitest, the frontend build, transfer, synchronization, and deployment verification. Therefore, the selected optimization maintained the required quality under the tested conditions.
 
 The results showed reductions in mean execution times with Native SCP. However, the final evaluation did not provide enough statistical evidence to claim a significant performance improvement. These findings are discussed further in Chapter 8.
+
 
 
 
