@@ -14,8 +14,40 @@ A public GitHub Actions dataset from the FastAPI project is used as a supporting
 
 ## 4.3 Data Collection and Preprocessing
 
+Historical execution data was collected from the selected iSign frontend GitHub Actions workflow. The data included workflow runs, jobs and individual workflow steps. Timing information was taken from these different levels because the analysis needed to look at the full workflow, but also at the execution time of the main individual steps.
+
+The original frontend dataset contained 55 workflow runs. Not all of them could be used for a fair comparison. Runs that were not successful comparable full executions were removed from the main analysis. After filtering, 33 workflow runs remained and these produced 495 step-level observations. This filtering was important. The statistical and machine-learning methods needed runs that carried out the same type of workflow work, otherwise the timing comparison could become misleading.
+
+For the direct comparison between IQR and Isolation Forest, the same five timing features were used for every included run. These were SCP action setup, Node.js setup, dependency installation, React build and SCP transfer. Both methods therefore worked with the same measurements. This made the comparison more consistent and helped to avoid differences caused simply by using different workflow features.
+
+The public FastAPI GitHub Actions data was handled separately as supporting reference data. Its workflow structure was checked first, and 316 runs with a similar required test-job structure were kept. The dataset was mainly used to support development and testing of the analysis approach before it was applied to the iSign case. It was not considered another case study. No optimization was carried out on the FastAPI project.
+
 ## 4.4 Statistical Baseline and Isolation Forest Analysis
+
+The interquartile range method was used as the simple statistical baseline. For each selected timing feature, the first quartile (Q1), third quartile (Q3), and interquartile range were calculated. The IQR was calculated by subtracting Q1 from Q3. Lower and upper fences were then formed using Q1 - 1.5 × IQR and Q3 + 1.5 × IQR. Any timing value outside these limits was treated as a possible outlier.
+
+For the common-feature comparison, a workflow run was flagged by IQR if at least one of the five timing values was outside its lower or upper fence. Values exactly on the fence were not treated as outside the limit. This gives a simple way to notice unusually high or low execution times in individual workflow steps.
+
+Isolation Forest was applied to the same 33 comparable runs and the same five timing features. The model used 100 estimators, automatic contamination, and a random state of 42. The fixed random state was used to keep the analysis reproducible. With the same dataset and settings, the method should return the same classification result.
+
+Isolation Forest was used as an unsupervised method because verified labels for normal and anomalous workflow runs were not available. IQR checks each timing feature separately. Isolation Forest works differently, as it considers all five timing values together as one combined pattern. Using the same runs and the same features for both methods made the comparison more direct and easier to interpret.
 
 ## 4.5 Comparison of Analysis Methods
 
-## 4.6 Optimization Evaluation Plan
+IQR and Isolation Forest were compared using the same 33 iSign workflow runs and the same five timing features. This kept the comparison fair. Each method produced a run-level classification showing whether a run was treated as normal or unusual.
+
+The classifications were compared run by run. The comparison included runs flagged by both methods, runs flagged only by IQR, runs flagged only by Isolation Forest, and runs classified as normal by both methods. An overall agreement rate was also calculated by counting the runs where both methods gave the same classification.
+
+The disagreement cases were examined separately. This was important because the two methods look at timing data in different ways. IQR checks individual timing values against statistical limits, while Isolation Forest considers the combined pattern of all five features. These disagreement cases therefore helped to show what type of unusual behaviour each method could identify.
+
+Verified ground-truth labels were not available for the workflow runs. Because of this, accuracy, precision and recall were not calculated. The purpose was not to prove that one method was more accurate than the other. The aim was to examine how Isolation Forest supported the identification of unusual workflow behaviour compared with the simpler IQR baseline.
+
+## 4.6 Optimization Evaluation Design
+
+The selected Native SCP optimization was tested against the previous Docker SCP method under controlled conditions. The other main parts were kept the same for both workflows: frontend project, Node.js setup, dependencies, React build, development server, deployment target, synchronization and verification. The main technical change was the SCP implementation. Runs were carried out one by one. The order was alternated between Docker and Native so that one method was not always tested first.
+
+The main evaluation included 14 Docker SCP runs and 14 Native SCP runs. Vitest was enabled in both workflows with the same command and test selection. It was used as a common quality gate and was not part of the SCP optimization. Performance was evaluated using total workflow duration, total job execution time as a resource-use proxy, and SCP-related duration. Direct CPU and memory measurements were not available, so the resource-use proxy was treated only as an indirect measure.
+
+Descriptive statistics were calculated for the main performance measures. Mean, median, standard deviation, minimum, maximum and range were used to describe the results. Welch's two-sample t-test was then used to compare Docker SCP and Native SCP. A significance level of 0.05 and 95% confidence intervals were used to evaluate whether the observed differences were statistically significant.
+
+Quality was checked separately from execution time. Vitest success, frontend build success, SCP transfer, file synchronization, deployment verification and complete job success were checked for both methods. A separate seven-pair no-Vitest diagnostic comparison was also carried out to examine SCP-related timing with fewer unrelated workflow components. These diagnostic runs were kept outside the main evaluation dataset and were used only as supporting evidence.
